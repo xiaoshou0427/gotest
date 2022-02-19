@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"learn.go/fatrate.refactor/cacl-upgrade"
+	"learn.go/fatrate.refactor/cacl"
 )
 
 func main() {

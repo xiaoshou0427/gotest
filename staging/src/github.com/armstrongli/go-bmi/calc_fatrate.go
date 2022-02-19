@@ -1,4 +1,4 @@
-package cacl
+package gobmi
 
 func FatRateCalc(bmi float64, age int, sex string) (fatRate float64) {
 	sexWeight := 0  // 这个变量不用在外面定义，也不用形参，因为这个不在外面有任何意义，所以可以在这里定义
