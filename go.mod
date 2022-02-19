@@ -10,8 +10,8 @@ require (
 )
 
 replace (
-	github.com/armstrongli/go-bmi => github.com/xiaoshou0427/go-bmi v0.0.0-20210904081709-c4b711282417
-	//github.com/armstrongli/go-bmi => ./staging/src/github.com/armstrongli/go-bmi
+	//github.com/armstrongli/go-bmi => github.com/xiaoshou0427/go-bmi v0.0.0-20210904081709-c4b711282417
+	github.com/armstrongli/go-bmi => ./staging/src/github.com/armstrongli/go-bmi
 	github.com/spf13/cobra => github.com/spf13/cobra v1.3.0
 	learn.go.tools => ../learn.go.tools
 )

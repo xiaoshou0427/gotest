@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"learn.go/fatrate.refactor/cacl"
+	"learn.go/chapter03/fatrate.refactor/cacl"
 )
 
 func main() {
@@ -19,7 +19,10 @@ func mainFatRateBody() {
 	//录入个人信息
 	name, sex, tall, weight, age := getInfo()
 	//计算体脂
-	fatRate := fatRateCalc(tall, weight, age, sex, name)
+	fatRate, err := fatRateCalc(tall, weight, age, sex, name)
+	if err != nil {
+		fmt.Println("Warning: 计算体脂率出错，不能继续：", err)
+	}
 	//fatRate := fatRateCalc(bmi, age, sexWeight, name)
 	//获取体脂信息
 	getFatRateResult(sex, age, fatRate)
@@ -88,11 +91,14 @@ func getHealthinessSuggestionForFemale(age int, fatRate float64) {
 	}
 }
 
-func fatRateCalc(tall float64, weight float64, age int, sex string, name string) (fatRate float64) {
-	bmi := cacl.CalcBMI(tall, weight)         //对于我来说bmi 只需要计算出结果，来进行体脂率计算即可，所以不用传入参数，这里调用cacl包
+func fatRateCalc(tall float64, weight float64, age int, sex string, name string) (fatRate float64, err error) {
+	bmi, err := cacl.CalcBMI(tall, weight)         //对于我来说bmi 只需要计算出结果，来进行体脂率计算即可，所以不用传入参数，这里调用cacl包
+	if err != nil {
+		return 0, err  //注意这里的err，实参定义err（如果不定义 报错），并且此时的CalcBMI 获得的结果，所以上面白了
+	}
 	fatRate = cacl.FatRateCalc(bmi, age, sex) //在这里调用包cacl包
 	fmt.Printf("您好，%v，体脂率为: %v\n", name, fatRate)
-	return fatRate
+	return
 }
 
 func getInfo() (name string, sex string, tall float64, weight float64, age int) {
