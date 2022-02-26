@@ -15,6 +15,10 @@ func main() {
 	}
 }
 
+func init()  {
+	fmt.Println("我是init函数")
+}
+
 func mainFatRateBody() {
 	//录入个人信息
 	name, sex, tall, weight, age := getInfo()
