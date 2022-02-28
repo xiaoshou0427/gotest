@@ -52,6 +52,36 @@ func TestCase1(t *testing.T) {
 
 }
 
+func TestCase2(t *testing.T) {
+	inputRecord("王强", 0.38)
+	inputRecord("张伟", 0.38)
+	inputRecord("李静", 0.28)
+	{ //李静的信息
+		rankOfLJ, fatRateOfLJ := getRank("李静")
+		if rankOfLJ != 1 {
+			t.Fatalf("预期李静第一，但是得到的是： %d", rankOfLJ) //利用Fatalf 失败了，就停止
+		}
+		if fatRateOfLJ != 0.28 { //如果获得的体脂率与期望录入的值不相等，那么停止测试 抛出错误
+			t.Fatalf("预期李静的体脂率为0.28，但是得到的是：%f", fatRateOfLJ)
+		}
+	}
+	{
+		rankOfWQ, fatRateOfWQ := getRank("王强") //获得王强的排名,同时获取体脂率，下面是做判断
+		if rankOfWQ != 2 {                     //如果王强的排名不是第一名，就算失败,希望在不符合预期的时候尽快结束代码--fail fast
+			t.Fatalf("预期王强第二，但是得到的是： %d", rankOfWQ) //利用Fatalf 失败了，就停止
+		}
+		if fatRateOfWQ != 0.38 { //如果获得的体脂率与期望录入的值不相等，那么停止测试 抛出错误
+			t.Fatalf("预期王强的体脂率为0.38，但是得到的是：%f", fatRateOfWQ)
+		}
+	}
+	{
+		rankOfZW, fatRateOfZW := getRank("张伟") //获得王强的排名,同时获取体脂率，下面是做判断
+		if rankOfZW != 2 {                     //如果王强的排名不是第一名，就算失败,希望在不符合预期的时候尽快结束代码--fail fast
+			t.Fatalf("预期张伟第二，但是得到的是： %d", rankOfZW) //利用Fatalf 失败了，就停止
+		}
+		if fatRateOfZW != 0.38 { //如果获得的体脂率与期望录入的值不相等，那么停止测试 抛出错误
+			t.Fatalf("预期张伟的体脂率为0.38，但是得到的是：%f", fatRateOfZW)
+		}
+	}
 
-
-
+}
