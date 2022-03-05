@@ -19,7 +19,7 @@ func main() {
 
 	newC := NewCalculter{}
 	newC.left = 100
-	newC.right = 200``
+	newC.right = 200
 	fmt.Println(newC.Add())
 
 	mc := MyCommand{
