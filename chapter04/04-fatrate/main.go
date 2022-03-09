@@ -50,6 +50,11 @@ func getPersonInfoFromInput() *Person {
 }
 
 //录入一个假的信息，这个在ut的时候调用这个方法来做剩下所有的计算了：
+//*Person Person指针指向的变量内容，就是&Person的内容，也就是这个小强等信息！
+//&Person 指针变量，指向Person 结构体的内存地址（也就是这个变量保存着Person结构体的内存地址，指向它）
+//而这个结构体的成员变量都赋值了，那么就是指向的这个实际赋值的结构体的地址块！
+//那么*Person 就是要取出这个指针变量指向的内存地址（保存的内存地址）中的内存数据！
+//参考：https://zhuanlan.zhihu.com/p/46673861
 func getFakePersonInfo() *Person {
 	return &Person{
 		name:   "小强",
