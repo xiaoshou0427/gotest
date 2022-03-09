@@ -28,3 +28,4 @@ func (Calc) FatRate(person *Person) error {
 	//上面gobmi.FatRateCalc 只有一个返回值，直接用person.fatRate把它装起来，这里赋值即可
 	return nil //与BMI 相同的逻辑
 } //完成计算器部分
+//这里需要修改对象的成员内容，就需要用到指针：https://zhuanlan.zhihu.com/p/46673861
