@@ -4,7 +4,7 @@ import "fmt"
 
 func main() {
 	//获取个人信息
-	person := getFakePersonInfo() //不做一项一项的录入了，假数据测试
+	person := getFakePersonInfo() //不做一项一项的录入了，假数据测试。接收函数返回的指针函数所指向结构体的内存地址！
 	//剩下的是事情就是去做计算和获取建议了
 	//开始计算
 	c := Calc{}
@@ -50,11 +50,11 @@ func getPersonInfoFromInput() *Person {
 }
 
 //录入一个假的信息，这个在ut的时候调用这个方法来做剩下所有的计算了：
-//*Person Person指针指向的变量内容，就是&Person的内容，也就是这个小强等信息！
-//&Person 指针变量，指向Person 结构体的内存地址（也就是这个变量保存着Person结构体的内存地址，指向它）
-//而这个结构体的成员变量都赋值了，那么就是指向的这个实际赋值的结构体的地址块！
-//那么*Person 就是要取出这个指针变量指向的内存地址（保存的内存地址）中的内存数据！
 //参考：https://zhuanlan.zhihu.com/p/46673861
+//再理解一下 *Person 类似于 *int，*float 是一个指针类型的Person，预期产出是一个指针类型的Persion!
+//就像你定义函数的时候，预期产出可以是一个int 或者float 类似，这里预期产出是一个指针类型的结构体Person!
+//而&Person{xxx: xxxx} ===> & Person{xxx:xxxx} return返回一个指针变量，而这个指针变量指向Person{xxx: xxxx}的内存地址
+//而预期产出是一个指针类型的Person ,也就是指向Person的内存地址，符合预期，返回这个已经给成员变量赋值的结构体的内存地址！
 func getFakePersonInfo() *Person {
 	return &Person{
 		name:   "小强",
