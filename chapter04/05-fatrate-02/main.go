@@ -3,23 +3,18 @@ package main
 import "fmt"
 
 func main() {
-	//获取个人信息
-	person := getFakePersonInfo() //不做一项一项的录入了，假数据测试。接收函数返回的指针函数所指向结构体的内存地址！
-	//剩下的是事情就是去做计算和获取建议了
-	//开始计算
-	c := Calc{}
-	c.BMI(person)     //不需要赋值，因为结果不重要，要的是计算好的bmi 写回到person
-	c.FatRate(person) //上面已经计算好bmi，写回到person，这时候person有了bmi，计算fatrate
-	//调用完毕后，也写回到了person中
-	fmt.Println("person:", *person) //person 不是一个指针哦，是一个变量，定义为从函数获取返回结果
-	//获取的返回结果是指针类型的Person---*Person意味着打开盒子取出内容，盒子是一个指针类型的结构体，打开结构体指针
-	//获得 Person的属性信息，之前c.xxx 已经做了写入操作，bmi和fatrate 就已经有了
-	//根据计算结果，给出建议
-	sugg := fatRateSuggestion{}
-	suggestion := sugg.GetSuggestion(person)
-	fmt.Println("Suggestion: ", suggestion)
-	//整个逻辑没有变化都是：获取个人信息，计算体脂率，给出建议
+	//实例化结构体
+	frSvc := &fatRateService{s: getFatRateSuggestion()}
+	//获取一个人的信息测试
+	fakePerson := getFakePersonInfo()
+	fmt.Println(frSvc.GiveSuggestionToPerson(fakePerson))
+	// 永远循环下去：
+	for {
+		p:=getPersonInfoFromInput()
+		fmt.Println(frSvc.GiveSuggestionToPerson(p))
+	}
 }
+
 
 //命令行录入真人的信息：*person 打开盒子将内容放进去！ 指针类型的！用指针节省资源？
 func getPersonInfoFromInput() *Person {
@@ -64,6 +59,7 @@ func getFakePersonInfo() *Person {
 		age:    35,
 	}
 }
+
 //下面的修改案例更好说明，上面是简写的，预期产出是一个指针类型的结构体（也可以叫指针变量吧？），return 返回真实的值给到预期
 // xyz 为指针变量（是指针类型），指向结构体person{小强 男 1.7 70 35 24.221453287197235 0.20565743944636683}的内存地址
 //给到person := getFakePersonInfo() 这个调用函数，直接将person 设置为指针类型的变量！

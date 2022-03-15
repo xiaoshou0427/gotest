@@ -2,7 +2,7 @@ package main
 
 //某个东西需要按照特定的规则才能工作的话，需要有自己的一个初始化，需要符合我们的需求
 //三维数组[][][] ===> [男][0][0，1，2，3，4],[男][1][0,1,2,3,4],2{0,1,2,3,4}},女{0,1,2} }
-
+//这里是一个初始化动作
 func getFatRateSuggestion() *fatRateSuggestion {
 	return &fatRateSuggestion{
 		suggArr: [][][]int{
@@ -47,7 +47,14 @@ func (s *fatRateSuggestion) GetSuggestion(person *Person) string {
 	sexIdx := s.getIndexOfSex(person.sex) //获得sex的索引，这里拿到结构体的成员函数getIndexOfSex,性别从person拿，这里person 是结构体，不是指针
 	ageIdx := s.getIndexOfAge(person.age) //获得age的索引
 	//获取建议的index，这里要思考一下，你要获取的是最终的0，1，2，3，4 才能转换成体型信息
-	suggIdx := s.suggArr[sexIdx][ageIdx][int(person.fatRate*100)] //这里是整个的suggestion id
+
+	//做一个判断，超过体脂45% 怎么计算！
+	maxFRSupported := len(s.suggArr[sexIdx][ageIdx]) -1 // 这里增加一个函数来,来取保长度符合规范，这里长度是多少？---len 为45 ，减1 = 44 ！ 而下标是从0 - 44 表示45个值！
+	frIdx := int(person.fatRate*100) //第三维数组的下标！！！ 这个下标最大应该为44！超出部分需要修改
+	if frIdx > maxFRSupported { //大于44 怎么办 那就是 > 44 了，比如45了，就给frIdx 改成44 吧！ 把下标定格在44 以内！
+		frIdx = maxFRSupported
+	}
+	suggIdx := s.suggArr[sexIdx][ageIdx][frIdx] //这里是整个的suggestion id
 	//前面两个取来 男/女--》 0/1，取了年龄 --》 0，1，2
 	//最后一个维度从person的体脂率*100取整数，比如计算的体脂率为0.05xxx ---> 0.05xxx *100 取整数 = 5
 	//那么index 为5 ， 比如前两个是[0][0]，最后一个是5 即：s.suggArr[0][0][5] = 0
