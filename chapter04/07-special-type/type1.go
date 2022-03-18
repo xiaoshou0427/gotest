@@ -1,30 +1,58 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 func main() {
 
 	vg :=&voteGame{
 		students: []*student{ //嵌套的指针，需要实例化嵌套的指针
-			&student{name: fmt.Sprintf("%d",1)}, //Sprintf 这里终端不显示，是是把这个值赋给name
-			&student{name: fmt.Sprintf("%d",2)},
-			&student{name: fmt.Sprintf("%d",3)},
-			&student{name: fmt.Sprintf("%d",4)},
-			&student{name: fmt.Sprintf("%d",5)},
+			&student{name: fmt.Sprintf("%s","A")}, //Sprintf 这里终端不显示，是是把这个值赋给name
+			&student{name: fmt.Sprintf("%s","B")},
+			&student{name: fmt.Sprintf("%s","C")},
+			&student{name: fmt.Sprintf("%s","D")},
+			&student{name: fmt.Sprintf("%s","E")},
+			&student{name: fmt.Sprintf("%s","F")},
+			&student{name: fmt.Sprintf("%s","G")},
+			&student{name: fmt.Sprintf("%s","H")},
+			&student{name: fmt.Sprintf("%s","I")},
+			&student{name: fmt.Sprintf("%s","G")},
+			&student{name: fmt.Sprintf("%s","K")},
+			&student{name: fmt.Sprintf("%s","L")},
+			&student{name: fmt.Sprintf("%s","M")},
+			&student{name: fmt.Sprintf("%s","N")},
+			&student{name: fmt.Sprintf("%s","O")},
+			&student{name: fmt.Sprintf("%s","P")},
+			&student{name: fmt.Sprintf("%s","Q")},
 		},
 	}
 	leader := vg.goRun()
-	fmt.Println(leader)
+	fmt.Println(leader.name)
+	leader.Distribute()
 }
 
 type voteGame struct {
 	students []*student //一个列表是指针结构体student类型，多个学生的得票,嵌套指针，在使用的时候要实例化
 }
-type Leader = student //类型重命名，更容易理解
+type Leader student //类型重定义，更容易理解
+
+func (l *Leader) Distribute(){
+	fmt.Println("发作业了！班长深沉的说到---",l.name)
+}
 
 func (g *voteGame) goRun() *Leader {  //成员函数，goRun，实参为指针类型的Leader,即指针类型的student
 	for _, item := range g.students { //循环所有学生
-		item.voteA(g.students[0]) //总是给第一个投票，//todo 可以用随机数代替
+		randInt := rand.Int() //定义一个变量，随机整数
+		if randInt%2 ==  0 { //随机数对2取模=0，即随机数为偶数，则投票给下标为randInt%len(g.students)的学生
+			//这里len(g.students),比如上面A-E是 长度是5，随机数对5取模，只会是0-4！数学问题，防止 out of range！
+			item.voteA(g.students[randInt%len(g.students)]) //随机投票给agree
+		} else {
+			item.voteA(g.students[randInt%len(g.students)]) //奇数就投disagree
+			//这样就随机分配给不同的人了！随机偶数就投agree，投给谁也是随机的！
+		}
+
 	}
 	//找到票数最高的那个人！
 	maxScore := -1
@@ -36,7 +64,7 @@ func (g *voteGame) goRun() *Leader {  //成员函数，goRun，实参为指针�
 		}
 	}
 	if maxScoreIndex >= 0 { //下标一定是从0开始的，防止意外，如果没有学生，那么index就是默认值-1
-		return g.students[maxScoreIndex] //返回一个最大值
+		return (*Leader)(g.students[maxScoreIndex]) //返回一个最大值
 	}
 	return nil //剩下就给个空，指针类型可以用nil 作为返回结果
 }
