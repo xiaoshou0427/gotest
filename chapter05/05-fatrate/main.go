@@ -1,15 +1,19 @@
 package main
 
-import "fmt"
-
 func main() {
 	//实例化结构体
-	frSvc := &fatRateService{s: getFatRateSuggestion(),input: &fakeInput{}} // todo
+	frSvc := &fatRateService{
+		s:     getFatRateSuggestion(),
+		input: &inputFromStd{},
+		output: &StdOut{},
+	}
+
+	//frSvc := &fatRateService{s: getFatRateSuggestion(),input: &fakeInput{}} // todo
 
 	// 永远循环下去：
 	for {
 		p := frSvc.input.GetInput()
-		fmt.Println(frSvc.GiveSuggestionToPerson(&p))
+		frSvc.GiveSuggestionToPerson(&p)
 	}
 }
 

@@ -4,3 +4,7 @@ package main
 type InputService interface {
 	GetInput() Person
 }
+
+type OutputService interface {
+	Output(Person, string) //保存人的信息和建议信息
+}
