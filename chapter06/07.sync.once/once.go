@@ -24,14 +24,44 @@ func initGlobalRankStandard(standard []string) {
 
 }
 
+var facStore = &dbFactoryStore{}
+
+type dbFactoryStore struct {
+	store map[string]DBFactory
+}
+
+type Conn struct {
+}
+
+type DBFactory interface {
+	GetConnection() *Conn
+}
+
+func initMySqlFac(connStr string) DBFactory {
+	return &MySqlDBFactory{}
+}
+
+type MySqlDBFactory struct {
+	once sync.Once
+}
+
+func (MySqlDBFactory) GetConnection() *Conn {
+	once.Do(func() {
+		initMySqlFac("")
+	})
+	//todo
+	return nil
+}
+
 func main() {
-	//程序注入一个standard
-	standard := []string{"asia"}
-	//使用goroutine 就有多个线程再跑上面的函数，都会去执行锁和解锁，判断，无形中会成为整个系统的瓶颈！
-	//而且上面func initGlobalRankStandard写的很长很长
-	for i := 0; i < 10; i++ {
-		go func() {
-			initGlobalRankStandard(standard)
-		}()
-	}
+	////程序注入一个standard
+	//standard := []string{"asia"}
+	////使用goroutine 就有多个线程再跑上面的函数，都会去执行锁和解锁，判断，无形中会成为整个系统的瓶颈！
+	////而且上面func initGlobalRankStandard写的很长很长
+	//for i := 0; i < 10; i++ {
+	//	go func() {
+	//		initGlobalRankStandard(standard)
+	//	}()
+	//}
+	connStr := "xxxxx"
 }

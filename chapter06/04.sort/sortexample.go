@@ -24,7 +24,7 @@ func (b Buttons) Len() int {
 }
 
 //如果i 小于 j ，排序位置不发生变化（这只是个方法！！）
-//下面是返回true/false，ihej的floor 进行对比，i的floor小于j的floor 就true
+//下面是返回true/false，i，j的floor 进行对比，i的floor小于j的floor 就true
 func (b Buttons) Less(i, j int) bool {
 	return b[i].Floor < b[j].Floor //对比floor，b[i]是index i 的：{Floor: x}，b[j]也类似
 }
@@ -52,9 +52,9 @@ func main() {
 	//sort.Sort(ev.buttons) //自己debug吧
 	sort.Sort(sort.Reverse(ev.buttons))
 
-	fmt.Println(ev.buttons) //指针
-	fmt.Printf("%+v\n",ev.buttons) //结果出不来
-	for _,item:=range ev.buttons{
+	fmt.Println(ev.buttons)         //指针
+	fmt.Printf("%+v\n", ev.buttons) //结果出不来
+	for _, item := range ev.buttons {
 		fmt.Println(item.Floor) //可以看到排好序的楼层！
 	}
 

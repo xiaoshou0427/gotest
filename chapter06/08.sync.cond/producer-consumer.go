@@ -31,7 +31,7 @@ func (Producer) Produce(s *Store) {
 		//如果有消费者发送消息给它，它就跑起来！
 	}
 	fmt.Println("开始生产 +1")
-	s.DataCount++ //这里增加一个库存，那么下面就发送一个信号给到消费者！！
+	s.DataCount++    //这里增加一个库存，那么下面就发送一个信号给到消费者！！
 	s.cCond.Signal() //发送给消费者
 }
 
@@ -63,7 +63,7 @@ func main() {
 	}
 	//初始化这两个成员变量？？？？？？？？？没有解释！
 	s.pCond = sync.NewCond(&s.lock) //拿着同一把锁，各自等各自的条件
-	s.cCond = sync.NewCond(&s.lock) //风险是同一把锁
+	s.cCond = sync.NewCond(&s.lock) //风险是同一把锁！
 
 	//需要多个producer和consumer，各来50个
 	pCount, cCount := 50, 50

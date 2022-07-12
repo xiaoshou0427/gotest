@@ -14,7 +14,7 @@ type Runner struct {
 
 //成员函数，这个对象的动作是什么！
 //这里入参是变量：wg，类型是waitgroup对象（结构体），这是个指针，指针变量wg 指向这个结构体的内存地址，这样快！？
-//startPointWg 给每个人，一个起跑令
+//startPointWg 给每个人，一个起跑令(这也是一个waitgroup类型的对象)
 func (r Runner) Run(startPointWg, wg *sync.WaitGroup) {
 	defer wg.Done()     //这个跟下面的wg不是一个意思哦！这个done定义在了这里哦！
 	startPointWg.Wait() //我在这等着，我在各个routine里面等着，等着统一的信号！然后大家才一起开始跑
@@ -49,11 +49,12 @@ func main() {
 		go runnerItem.Run(&startPointWg, &wg) //开始跑，随机数后，到达终点，需要waitgroup参与到其中！
 		//这里是开启了goroutine，可以理解为新的进程去做这个函数
 	}
-
+	//上面这一部分是起的goroutine在跑，每个go routine都在工作，此时都卡在了startPointWg.Wait()这里等待
+	//此时main goroutine 继续执行（这个时间是并行的），执行到了下面的这些print
 	fmt.Println("各就各位")
 	time.Sleep(2 * time.Second)
 	fmt.Println("预备：跑！")
-
+	//main gouroutine 执行到这里，发现有个Done--那么其他goroutine的startPointWg.Wait() 看到变为0了，继续向下执行剩余的内容！
 	startPointWg.Done()
 
 	wg.Wait() //等待所有的done
