@@ -6,10 +6,6 @@ import (
 	"time"
 )
 
-type Config struct {
-	Content string //包含的内容，用于对象嵌套
-}
-
 type WebServerV1 struct { //webserver 有配置和读写锁，因为访问量很大的时候需要用读写锁
 	config     Config       //嵌套了上面的内容
 	configLock sync.RWMutex //多个人都可以读，只有一个人写，如果用普通锁，访问量大，就爆了
