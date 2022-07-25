@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"sync"
 )
 
@@ -53,7 +54,22 @@ func (MySqlDBFactory) GetConnection() *Conn {
 	return nil
 }
 
+var counter int = 0
+var counterOnce sync.Once
+
+type School struct {
+	classroomLocation map[string]string //初始化一次就够了，这里只是举例说明，没有引用
+}
+
 func main() {
+	for i := 0; i < 10; i++ {
+		fmt.Println("第x次：", i)
+		counterOnce.Do(func() {
+			fmt.Println("初始化")
+			counter++
+		})
+	}
+	fmt.Println("最终结果：", counter)
 	////程序注入一个standard
 	//standard := []string{"asia"}
 	////使用goroutine 就有多个线程再跑上面的函数，都会去执行锁和解锁，判断，无形中会成为整个系统的瓶颈！
@@ -63,5 +79,5 @@ func main() {
 	//		initGlobalRankStandard(standard)
 	//	}()
 	//}
-	connStr := "xxxxx"
+	//connStr := "xxxxx"
 }
