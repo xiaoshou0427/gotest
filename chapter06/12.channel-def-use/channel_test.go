@@ -351,3 +351,24 @@ func TestMultipleChannelReadySelect(t *testing.T) {
 	}
 	fmt.Println("ch1Counter:", ch1Counter, "ch2Counter:", ch2Counter)
 }
+
+func TestMultipleChannelReadySelectWithDefaultForOrder(t *testing.T) {
+	ch1, ch2 := make(chan int), make(chan int)
+	close(ch1)
+	close(ch2)
+	//关闭掉两个channel，意味着，永远都是ready的状态
+	//select做嵌套
+	ch1Counter, ch2Counter := 0, 0
+	for i := 0; i < 10000; i++ {
+		select {
+		case <-ch1:
+			ch1Counter++ //这个ready了，就走这个，这个没有ready就走default
+		default:
+			select { //default在这里嵌套select，此时等待下面case ready后结束。
+			case <-ch2:
+				ch2Counter++
+			}
+		}
+	}
+	fmt.Println("ch1Counter:", ch1Counter, "ch2Counter:", ch2Counter)
+}
