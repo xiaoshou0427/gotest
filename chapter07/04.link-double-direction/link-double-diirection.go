@@ -76,6 +76,63 @@ func insertNode(root *LinkNode, newNode *LinkNode) *LinkNode {
 	}
 }
 
+//删除节点操作,要有返回值，可能也会删除头部
+func deleteNode(root *LinkNode, v int) *LinkNode {
+	if root == nil {
+		return nil
+	}
+	//删除头部（删除的数据在第一个节点）
+	if root.data == v { //当删除的节点出现在第一个节点的时候
+		//这里还有一种情况没有判断，那就是只有一个节点的情况，视频让自己做
+		//todo 需要解决只有一个节点的情况，我这边判断了一下，如果next为空，就返回空，清除完毕
+		if root.next == nil {
+			return nil
+		}
+		//此处用左手这个变量来承接要删除的第一个节点，然后把root移动到第二个节点，这个妙啊！
+		leftHand := root //定义一个左手，把root移走，左手是原来的第一个节点，也就是要删除的节点
+		root = root.next //重新定义root，把root移走到下一个节点！
+		//断开第一个节点
+		leftHand.next = nil //原本要删除的节点，也就是第一个节点
+		root.previous = nil //root已经是第二个节点了
+		//返回root 其实返回的是新的链接
+		return root
+	}
+
+	//处理删除节点在中间的情况
+	tmpNode := root
+	for {
+		//走到头
+		if tmpNode.next == nil { //next为空了,要么没找到，要么就是最后一个了
+			return root //没找到要删除的数据，直接返回root
+		} else { //判断左边的节点的next的data 是我们需要删除的数据时，做相应的操作
+			if tmpNode.next.data == v {
+				//找到节点，开始删除，删除完成后返回原root
+				// todo
+				rightHand := tmpNode.next     //这里如果找到了，那么开始删除，右手等于要删除的数据，找出来
+				tmpNode.next = rightHand.next //这就把要删除的节点左侧节点链到删除节点右侧节点
+
+				//如果删除最后一个节点，就需要判断，不然会报错
+				//此时的tmpNode.next已经赋值为要删除节点的next 这里如果是最后一个节点就为nil了！
+				if tmpNode.next == nil { //这里不用链接右边节点到左边节点，因为是最后一个节点
+					//rightHand.next = nil //这条可以不加的，因为最后一个节点就是nil！
+					rightHand.previous = nil //删除最后一个节点的向前的链接
+				} else {
+					//要删除右边节点链到删除节点的线路，右边节点链到左边节点去！跳过要删除的节点
+					rightHand.next.previous = tmpNode //就这么干
+
+					//清理需要删除节点的剩余链接，方便GC垃圾回收即可
+					rightHand.next = nil
+					rightHand.previous = nil
+				}
+				return root
+			}
+		}
+		//上述没找见，继续往后找
+		tmpNode = tmpNode.next
+
+	}
+}
+
 //读取链表数据
 func rangeLink(root *LinkNode) {
 	fmt.Println("从头到尾")
@@ -106,5 +163,12 @@ func main() {
 	root = insertNode(root, &LinkNode{data: 7})
 	root = insertNode(root, &LinkNode{data: 11})
 	root = insertNode(root, &LinkNode{data: 0})
+	root = insertNode(root, &LinkNode{data: -1})
 	rangeLink(root)
+	fmt.Println("删除节点")
+	root = deleteNode(root, -1)
+	root = deleteNode(root, 3)
+	root = deleteNode(root, 11)
+	rangeLink(root)
+
 }
