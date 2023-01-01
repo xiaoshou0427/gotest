@@ -1,13 +1,8 @@
 package main
 
-import (
-	"fmt"
-	"math/rand"
-)
-
 //有数组以外还需要位置信息，左半边，右半边的位置信息
 //给一个数组，左半边，右半边
-func quickSort(arr *[]int, start, end int) {
+func quickSort(arr *[]int64, start, end int) {
 	//todo 确认终止条件，否则将无限递归下去 （当剩下一个数字的时候还需要拆吗？不用了吧 即左边和右边指向同一个数字，就停了吧）
 
 	//选择好支点
@@ -39,8 +34,8 @@ func quickSort(arr *[]int, start, end int) {
 		l++ //
 		r-- //
 	}
-	fmt.Println("l:", l, "r:", r)
-	fmt.Println(*arr) //看看处理完是啥样子
+	//fmt.Println("l:", l, "r:", r)
+	//fmt.Println(*arr) //看看处理完是啥样子
 	//做递归！！！
 	//start = 0 ， end = 4，上面循环完47 这个数字就好了！其他的呢？
 	//这里，会变成死循环！加判断
@@ -57,14 +52,3 @@ func quickSort(arr *[]int, start, end int) {
 }
 
 //还有一种可能是永远循环下去
-
-func main() {
-	arrSize := 100
-	arr := []int{}
-	for i := 0; i < arrSize; i++ {
-		arr = append(arr, rand.Intn(60)) //这里随机数是假的
-	} //50以内 随机加10个数字进去
-	fmt.Println("原生状态：", arr)
-	quickSort(&arr, 0, arrSize-1) //right 只能是4，用变量！！不要用具体的值
-	fmt.Println("排序状态：", arr)
-}
